@@ -1,0 +1,127 @@
+
+//#include "Element.h"
+#include <omp.h>
+#include "FEM.h"
+#include <iostream>
+#include <fstream>
+using namespace std;
+#define pause {cout << "Pause at line " << __LINE__ << ", FILE: " << __FILE__ << endl; system("pause"); }
+
+void MainFreeGlut(int argc, char** argv);
+
+
+FEM fem;
+
+int main(int argc, char** argv)
+{
+
+	
+	double Lx = 1;
+	double Ly = 1;
+	int Nx = 3;
+	int Ny = 3;
+	int N = (Nx + 1) * (Ny + 1);
+	double h = 1.0 / 3.0;
+
+
+	for (int j = 0; j <= Ny; j++)
+	{
+		for (int i = 0; i <= Nx; i++)
+		{
+			int t = 0;
+			double x = i * h;
+			double y = j * h;
+			//if (i == 0 || i == Nx) t = 1;
+			if (j == 0) t = 1;
+			//if (j == Ny) t = 1;
+			fem.newMeshPoint(x, y, t);
+		}
+	}
+
+	fem.finalizeMeshMaking();
+	
+	fem.initMeshValues();
+	
+	{
+		fem.newElement(0, 1, 5);
+		fem.newElement(0, 4, 5);
+		fem.newElement(1, 2, 6);
+		fem.newElement(1, 5, 6);
+		fem.newElement(2, 3, 7);
+		fem.newElement(2, 6, 7);
+
+		fem.newElement(4, 5, 9);
+		fem.newElement(4, 8, 9);
+		fem.newElement(5, 6, 10);
+		fem.newElement(5, 9, 10);
+		fem.newElement(6, 7, 11);
+		fem.newElement(6, 10, 11);
+		
+		double q = -0.5;
+		fem.newElement(8, 9, 13); 
+		fem.newElement(8, 12, 13); fem.addFluxToEdge(12, 13, q);
+		fem.newElement(9, 10, 14);
+		fem.newElement(9, 13, 14); fem.addFluxToEdge(13, 14, q);
+		fem.newElement(10, 11, 15);
+		fem.newElement(10, 14, 15); fem.addFluxToEdge(14, 15, q);
+	}
+
+	fem.tau = 0.1;
+
+	fem.computeAllCoefs();
+	fem.makeStiffnessMatrix();
+	
+
+	//fem.checkStiffnessMatrix(0);
+	//fem.checkStiffnessMatrix2();
+	
+	
+	fem.removeFixedValues();
+
+
+	omp_set_num_threads(2);
+#pragma omp parallel
+	{
+		if (omp_get_thread_num() == 0)
+		{
+			auto check = []()
+			{
+				double r = 0;
+				for (int i = 0; i < fem.Np; i++)
+					r += pow(fem.v[i] - fem.T[i], 2);
+				r = sqrt(r / fem.Np);
+				return r;
+			};
+			while(true)
+			{
+				fem.solve();
+				double r = check();
+				//if (fem.iter % 1000000 == 0) cout << r << endl;
+				//if (r < 1e-7) break;
+				if (fem.iter > 1000000) 
+				{
+					break;
+				}
+			}
+
+			for (int i = 0; i < N; i++)
+			{
+				//cout << fixed << setprecision(6);
+				//cout << fem.mesh[i].x << " " << fem.mesh[i].y << " " << fem.v[i] << " " << fem.T[i] << endl;
+			}
+			fem.writeData();
+			
+		}
+
+
+
+
+		if (omp_get_thread_num() == 1)
+		{
+			MainFreeGlut(argc, argv);
+		}
+
+	}
+	return 0;
+}
+

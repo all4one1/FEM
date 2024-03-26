@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="FEM">
+      <UniqueIdentifier>{10248956-539d-4c4e-8d7c-cc07bd844d73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_tools">
+      <UniqueIdentifier>{186c40b3-f0e0-4a35-aa28-77763bf4a7de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GL">
+      <UniqueIdentifier>{2b8791ea-4305-45be-9c00-8975d23af838}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\myLibs\Sparse\SparseMatrix.cpp">
+      <Filter>_tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Element.cpp">
+      <Filter>FEM</Filter>
+    </ClCompile>
+    <ClCompile Include="FEM.cpp">
+      <Filter>FEM</Filter>
+    </ClCompile>
+    <ClCompile Include="myGL\mainGL.cpp">
+      <Filter>GL</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Element.h">
+      <Filter>FEM</Filter>
+    </ClInclude>
+    <ClInclude Include="..\myLibs\Sparse\SparseMatrix.h">
+      <Filter>_tools</Filter>
+    </ClInclude>
+    <ClInclude Include="IterativeSolver.h">
+      <Filter>_tools</Filter>
+    </ClInclude>
+    <ClInclude Include="FEM.h">
+      <Filter>FEM</Filter>
+    </ClInclude>
+    <ClInclude Include="myGL\mouse.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="myGL\MouseState.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="myGL\triangle.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="myGL\draw.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="myGL\init.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="myGL\keyboard.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
